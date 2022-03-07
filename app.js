@@ -1,14 +1,18 @@
-const express = require('express')
-const mongoose = require('mongoose')
+const express = require('express')                   // Appel méthode express pour créer l'application
 const app = express()
-// Connexion de l'Api à la base de donnée MongoDB Atlas
+
+const mongoose = require('mongoose')
+const userRoutes = require('./routes/user')          // Importation router user
+
+app.use(express.json())
+
+// Connexion de l'Api à la Base de donnée MongoDB Atlas
 mongoose.connect('mongodb+srv://Min2000:Mina1985@cluster0.oe0ew.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
 {useNewUrlParser: true,
  useUnifiedTopology: true})
-.then(() => console.log('Connexion à MongoDB réusie'))
-.catch(() => console.log('Connexion à MongoDB échoué'))
+.then(() => console.log('Connexion à MongoDB réusie!'))
+.catch(() => console.log('Connexion à MongoDB échouée!'))
 
-app.use(express.json())
 // Middleware Cors
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,10 +21,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Les routes serveur
-app.post('/api/auth/signup', (req, res) => {
-    console.log('signup requet', req.body)
-    res.send({message: "Utilisateur enregistré!"})
-})
 
-module.exports = app 
+app.use('/api/auth', userRoutes)      // appel routes d'authentifications : inscription et login from user controllers                           
+module.exports = app

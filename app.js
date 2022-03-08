@@ -1,10 +1,10 @@
-const express = require('express')                   // Appel méthode express pour créer l'application
+const express = require('express')             // Appel méthode express pour créer l'application
 const app = express()
 
 const mongoose = require('mongoose')
-const userRoutes = require('./routes/user')          // Importation router user
-
-app.use(express.json())
+const userRoutes = require('./routes/user')    // Importation router user
+const stuffRoutes = require('./routes/stuff')
+app.use(express.json())                   // Donne acces au corps de la requete :mis sous format json objet requete dans req body Comme un bodyParser
 
 // Connexion de l'Api à la Base de donnée MongoDB Atlas
 mongoose.connect('mongodb+srv://Min2000:Mina1985@cluster0.oe0ew.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
@@ -13,7 +13,7 @@ mongoose.connect('mongodb+srv://Min2000:Mina1985@cluster0.oe0ew.mongodb.net/myFi
 .then(() => console.log('Connexion à MongoDB réusie!'))
 .catch(() => console.log('Connexion à MongoDB échouée!'))
 
-// Middleware Cors
+// Middleware general Cors  applicable à toutes les requetes envoyées au serveur
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -21,6 +21,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
-app.use('/api/auth', userRoutes)      // appel routes d'authentifications : inscription et login from user controllers                           
+app.use('/api/auth', userRoutes)      // appel routes d'authentifications : inscription et login from user controllers 
+app.use('api/sauces', stuffRoutes)    // routes CRUD          
 module.exports = app

@@ -1,6 +1,5 @@
 const express = require('express')             // Appel méthode express pour créer l'application
 const app = express()
-
 const mongoose = require('mongoose')
 const userRoutes = require('./routes/user')    // Importation router user
 const stuffRoutes = require('./routes/stuff')
